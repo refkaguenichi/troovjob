@@ -5,9 +5,9 @@ class Role extends Model {
   static get tableName() {
     return "roles";
   }
-  static get idColumn() {
-    return "id";
-  }
+  // static get idColumn() {
+  //   return "id";
+  // }
   static get columnNameMappers() {
     return snakeCaseMappers({ upperCase: true });
   }
@@ -15,14 +15,14 @@ class Role extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["onwnerId", "role"],
+      // required: ["role"],
 
       properties: {
-        id: { type: "string", format: "rid", readOnly: true },
-        ownerId: { type: ["string", "null"] },
+        id: { type: "integer" },
+        owner_id: { type: "integer" },
         role: {
           type: "string",
-          enum: ["user", "jobSeeker", "company", "admin"],
+          enum: ["user", "job_seeker", "company", "admin"],
           default: "user",
         },
         created_at: Date,
@@ -31,17 +31,17 @@ class Role extends Model {
       },
     };
   }
-  $beforeInsert() {
-    this.created_at = new Date();
-    this.updated_at = new Date();
-  }
+  // $beforeInsert() {
+  //   this.created_at = new Date();
+  //   this.updated_at = new Date();
+  // }
 
-  $beforeUpdate() {
-    this.updated_at = new Date();
-  }
+  // $beforeUpdate() {
+  //   this.updated_at = new Date();
+  // }
 
-  $beforeDelete() {
-    this.deleted_at = new Date();
-  }
+  // $beforeDelete() {
+  //   this.deleted_at = new Date();
+  // }
 }
 module.exports = Role;

@@ -3,18 +3,20 @@ const { Model, snakeCaseMappers } = require("objection");
 class JobSeeker extends Model {
   // Table name is the only required property.
   static get tableName() {
-    return "jobseekers";
+    return "job_seekers";
   }
   static get idColumn() {
     return "id";
   }
-
+  static get virtualAttributes() {
+    return ["fullName", "addres"];
+  }
   static get columnNameMappers() {
     return snakeCaseMappers({ upperCase: true });
   }
 
   fullName() {
-    return this.firstname + " " + this.lastname;
+    return this.first_name + " " + this.last_name;
   }
 
   address() {
@@ -23,7 +25,7 @@ class JobSeeker extends Model {
       " , " +
       this.address.city +
       " , " +
-      this.address.zipCode +
+      this.address.zip_code +
       " , " +
       this.address.country
     );
@@ -43,10 +45,10 @@ class JobSeeker extends Model {
         relation: Model.HasManyRelation,
         modelClass: Job,
         join: {
-          from: "jobseekers.id",
+          from: "job_seekers.id",
           through: {
-            from: "applications.jobSeekerId",
-            to: "applications.jobId",
+            from: "applications.job_seeker_id",
+            to: "applications.job_id",
           },
           to: "jobs.id",
         },
@@ -57,19 +59,24 @@ class JobSeeker extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["onwnerId", "email", "firstname", "lastname"],
+      required: ["email", "firstname", "lastname"],
 
       properties: {
-        id: { type: "string", format: "jsid", readOnly: true },
-        ownerId: { type: ["string", "null"] },
+        id: { type: "integer" },
+        owner_id: { type: ["integer", "null"] },
         email: { type: "string", minLength: 1, maxLength: 255 },
-        firstname: { type: "string", minLength: 1, maxLength: 255 },
-        lastname: { type: "string", minLength: 1, maxLength: 255 },
+        first_name: { type: "string", minLength: 1, maxLength: 255 },
+        last_name: { type: "string", minLength: 1, maxLength: 255 },
         title: { type: "string", minLength: 1, maxLength: 255 },
         summary: { type: "string", minLength: 1, maxLength: 255 },
         phone: { type: "number" },
         avatar: { type: "string", minLength: 1, maxLength: 255 },
-        links: { type: "array" },
+        links: {
+          type: "array",
+          items: {
+            type: "string",
+          },
+        },
         address: {
           type: "object",
           required: ["country"],
@@ -77,7 +84,7 @@ class JobSeeker extends Model {
             country: { type: "string" },
             city: { type: "string" },
             street: { type: "string" },
-            zipCode: { type: "string" },
+            zip_code: { type: "string" },
           },
         },
         created_at: Date,

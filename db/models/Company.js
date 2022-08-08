@@ -20,7 +20,7 @@ class Company extends Model {
         modelClass: Job,
         join: {
           from: "companies.id",
-          to: "jobs.companyId",
+          to: "jobs.company_id",
         },
       },
     };
@@ -33,11 +33,11 @@ class Company extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["onwnerId", "email", "name"],
+      required: ["email", "name"],
 
       properties: {
-        id: { type: "string", format: "cid", readOnly: true },
-        ownerId: { type: ["string", "null"] },
+        id: { type: "integer" },
+        owner_id: { type: ["integer", "null"] },
         email: { type: "string", minLength: 1, maxLength: 255 },
         name: { type: "string", minLength: 1, maxLength: 255 },
         phone: { type: "number" },
@@ -51,7 +51,7 @@ class Company extends Model {
             country: { type: "string" },
             city: { type: "string" },
             street: { type: "string" },
-            zipCode: { type: "string" },
+            zip_code: { type: "string" },
           },
         },
         created_at: Date,

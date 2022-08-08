@@ -1,28 +1,80 @@
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 exports.up = function(knex) {
     return knex.schema
-      .createTable("profiles", (table) => {
-        table.increments("id");
-        table.string("occupation").notNullable();
-        table.string("avatar").notNullable();
+      .createTable('users', (table) => {
+        table.increments('id');
+        table.string('user_name');
+        table.string('password');
         table.timestamps(true, true);
       })
-      .createTable("users", (table) => {
-        table.increments("id");
-        table.string("firstname").notNullable();
-        table.string("lastname").notNullable();
-        table.integer("profileId").references("id").inTable("profiles");
+      .createTable('roles', (table) => {
+        table.increments('id');
+        table
+          .integer('owner_id')
+          .references('id')
+          .inTable('users')
+          .onDelete('CASCADE');
+        table
+          .enum('role', ['user', 'job_seeker', 'company', 'admin'])
+          .notNullable();
+        table.timestamps(true, true);
+      })
+      .createTable('job_seekers', (table) => {
+        table.increments('id');
+        table
+          .integer('owner_id')
+          .references('id')
+          .inTable('users')
+          .onDelete('CASCADE');
+        table.string('email').notNullable();
+        table.string('first_name').notNullable();
+        table.string('last_name').notNullable();
+        table.string('title');
+        table.string('summary');
+        table.integer('phone');
+        table.string('avatar');
+        table.jsonb('links');
+        table.jsonb('address');
+        table.timestamps(true, true);
+      })
+      .createTable('companies', (table) => {
+        table.increments('id');
+        table
+          .integer('owner_id')
+          .references('id')
+          .inTable('users')
+          .onDelete('CASCADE');
+        table.string('email').notNullable();
+        table.string('name').notNullable();
+        table.string('description');
+        table.integer('phone');
+        table.string('logo');
+        table.jsonb('address');
+        table.timestamps(true, true);
+      })
+      .createTable('jobs', (table) => {
+        table.increments('id');
+        table
+          .integer('company_id')
+          .references('id')
+          .inTable('companies')
+          .onDelete('CASCADE');
+        table.string('title').notNullable();
+        table.string('description').notNullable();
+        table.string('location').notNullable();
+        table
+          .enum('category', ['full-time', 'part-time', 'freelancer'])
+          .notNullable();
+        table.double('salary');
+        table.date('expires_at');
         table.timestamps(true, true);
       });
 };
 
-/**
- * @param { import("knex").Knex } knex
- * @returns { Promise<void> }
- */
 exports.down = function(knex) {
-  return knex.schema.dropTable("profiles").dropTable("users");
+  return knex.schema
+    .dropTable('roles')
+    .dropTable('job_seekers')
+    .dropTable('jobs')
+    .dropTable('companies')
+    .dropTable('users');
 };

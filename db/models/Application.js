@@ -15,17 +15,16 @@ class Application extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: ["jobSeekerId", "jobId"],
 
       properties: {
         id: { type: "string", format: "apid", readOnly: true },
-        jobSeekerId: { type: ["string", "null"] },
-        jobId: { type: ["string", "null"] },
+        job_seeker_id: { type: ["string", "null"], required: true },
+        job_id: { type: ["string", "null"], required: true },
         requirements: {
           type: "object",
           properties: {
-            firstname: { type: "string", required: true },
-            lasttname: { type: "string", required: true },
+            first_name: { type: "string", required: true },
+            last_name: { type: "string", required: true },
             email: { type: "string", required: true },
             resume: { type: ["object", "null"], required: true },
             experience: { type: "string", required: true },

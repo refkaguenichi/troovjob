@@ -1,27 +1,37 @@
 {
   "name": "troovjob",
   "version": "1.0.0",
-  "description": "",
+  "description": "find jobs app",
   "main": "server.js",
   "scripts": {
     "make-seed": "knex seed:make dev --knexfile ./db/knexfile.js",
     "migrate": "npx knex migrate:latest --knexfile ./db/knexfile.js",
     "seed": "npx knex seed:run --knexfile ./db/knexfile.js",
+    "up": "npx knex migrate:up --knexfile ./db/knexfile.js",
     "down": "npx knex migrate:down --knexfile ./db/knexfile.js",
-    "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "cd client && npm run build",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install npm && run build",
+    "front": "cd client && npm start",
+    "back": "nodemon server",
+    "dev": "nodemon server && cd client && npm start"
   },
-  "author": "",
+  "author": "Refka Guenichi",
   "license": "ISC",
   "dependencies": {
     "@elastic/elasticsearch": "^8.2.1",
+    "bcrypt": "^5.0.1",
+    "config": "^3.3.7",
     "express": "^4.18.1",
+    "express-fileupload": "^1.4.0",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
     "knex": "^2.1.0",
     "nodemon": "^2.0.19",
     "objection": "^3.0.1",
     "pg": "^8.7.3"
   },
   "devDependencies": {
+    "concurrently": "^7.2.2",
     "dotenv": "^16.0.1"
   }
 }

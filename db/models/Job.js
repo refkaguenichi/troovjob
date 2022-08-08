@@ -15,27 +15,21 @@ class Job extends Model {
   static get jsonSchema() {
     return {
       type: "object",
-      required: [
-        "companyId",
-        "title",
-        "description",
-        "location",
-        "expireDate",
-      ],
+      required: ["title", "description", "location", "expire_at"],
 
       properties: {
-        id: { type: "string", format: "jid", readOnly: true },
-        companyId: { type: ["string", "null"] },
+        id: { type: "integer" },
+        company_id: { type: ["integer", "null"] },
         title: { type: "string", minLength: 1, maxLength: 255 },
         description: { type: "string", minLength: 1, maxLength: 255 },
         location: { type: "string", minLength: 1, maxLength: 255 },
         category: {
           type: "string",
-          enum: ["fullTime", "partTime", "freelancer"],
+          enum: ["full_time", "part-time", "freelancer"],
           default: "fullTime",
         },
-        salary:Number,
-        expireDate: Date,
+        salary: Number,
+        expires_at: Date,
         created_at: Date,
         updated_at: Date,
         deleted_at: Date,
