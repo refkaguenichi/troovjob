@@ -12,11 +12,24 @@ class Job extends Model {
     return snakeCaseMappers({ upperCase: true });
   }
 
+  static get relationMappings() {
+    const Company = require("./Company");
+    return {
+      company: {
+        relation: Model.BelongsToOneRelation,
+        modelClass: Company,
+        join: {
+          from: "companies.id",
+          to: "jobs.company_id",
+        },
+      },
+    };
+  }
+
   static get jsonSchema() {
     return {
       type: "object",
       required: ["title", "description", "location", "expire_at"],
-
       properties: {
         id: { type: "integer" },
         company_id: { type: ["integer", "null"] },
@@ -26,7 +39,7 @@ class Job extends Model {
         category: {
           type: "string",
           enum: ["full_time", "part-time", "freelancer"],
-          default: "fullTime",
+          default: "full_time",
         },
         salary: Number,
         expires_at: Date,

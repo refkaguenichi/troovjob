@@ -8,6 +8,7 @@ app.use(express.json());
 // Routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/users", require("./routes/user"));
+app.use("/api/jobs", require("./routes/job"));
 // app.use("/search", require("./routes/search"));
 
 //port

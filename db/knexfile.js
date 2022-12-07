@@ -11,6 +11,7 @@ module.exports = {
       database: "troovjob",
       user: "postgres",
       password: "password",
+      port: "6432",
     },
     pool: {
       min: 2,

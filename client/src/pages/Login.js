@@ -29,8 +29,7 @@ const handleSignIn = (e) => {
             id="exampleInputUserName1"
             aria-describedby="usernameHelp"
             onChange={(e) => {
-              setUserName(e.target.value);
-            }}
+              setUserName(e.target.value)}}
             value={userName}
           />
         </div>
